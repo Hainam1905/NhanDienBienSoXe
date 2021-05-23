@@ -264,7 +264,8 @@ def ipCam(ipCamAdd, port):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-def pic(OriImg,bikekey,key):
+# def pic(OriImg,bikekey,key):
+def pic(OriImg):
     #Tìm biển số
     img=findLP_img(OriImg)
     #resize lại hình
@@ -280,9 +281,9 @@ def pic(OriImg,bikekey,key):
     imgtemp=draw_rects_on_img(img,cnts)
     imgtemp, sort_number=find_number(cnts,binImg,imgtemp)
 
-    # cv2.imshow('binary',binImg)
-    # cv2.imshow('result',imgtemp)
-    firebase.put('/bike/',bikekey,sort_number+key)
+    cv2.imshow('binary',binImg)
+    cv2.imshow('result',imgtemp)
+    # firebase.put('/bike/',bikekey,sort_number+key)
     print('bien so xe: ',sort_number)
 
     #mở thư mục number để xe,
@@ -410,13 +411,14 @@ def ClientHandling(firebase):
 if __name__ == "__main__":
 
     # OriImg = cv2.imread('./Bike_back/xm7nho.jpg',1)
-    #OriImg = cv2.imread('./img/xh2.jpg',1);
+    OriImg = cv2.imread('./img/xm7.jpg',1);
+    pic(OriImg)
     # video_playback('./video/cv2.mp4')
     # video_webcam()
     # ipCam()
 
-    firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
-    ClientHandling(firebase)
+    # firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
+    # ClientHandling(firebase)
 
  
 
