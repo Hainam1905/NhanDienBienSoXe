@@ -128,7 +128,8 @@ def Handling(firebase,scanbike,bikelist,scanbikekey,booleankey):
 
 if __name__ == "__main__":
     print("Sever opened")
-    firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
+    # firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
+    firebase = firebase.FirebaseApplication('https://bike-2f2b2-default-rtdb.firebaseio.com/', None)
     bikelist=getBikeList(firebase)
     scanbike=getScanBike(firebase)
     scanbikekey=getScanBikeKey(firebase)

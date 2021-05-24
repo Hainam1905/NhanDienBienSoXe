@@ -1,6 +1,7 @@
 from firebase import firebase
 import json
-firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
+# firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
+firebase = firebase.FirebaseApplication('https://bike-2f2b2-default-rtdb.firebaseio.com/', None)
 firebasers=firebase.get('/bike/','')
 firebasers=str(firebasers)
 firebasers=firebasers.split('\'')
