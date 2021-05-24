@@ -82,14 +82,24 @@ def find_number(cnts,binImg,imgtemp):
     if(wimg/himg >2):
         hf=himg*0.6
         hl=himg*0.8
+        digit=4000
+        max_digit=20000
+        
     else:
-        hf=0.3*himg
+        hf=0.28*himg
         hl=0.4*himg
+        digit=4600
+        max_digit=5500
+        
     plate_number = ''
     for c in (cnts):
         x,y,w,h=cv2.boundingRect(c)
+        if(wimg/himg >2):
+            top_height=0;
+        else:
+            top_height=h*15/100
         cv2.rectangle(imgtemp, (x, y), (x + w, y + h), (0, 255, 0), 1)
-        if h/w >1.5 and h/w <4 and h>=hf or cv2.contourArea(c)>4600 and h<= hl: #cái này áp dụng cho cả biển xe máy xe hơi
+        if h/w >1.5 and h/w <4 and h>=hf and ((cv2.contourArea(c)>digit and cv2.contourArea(c)<=max_digit) or h<= hl) and y>(top_height): #cái này áp dụng cho cả biển xe máy xe hơi
         #if h/w >1.5 and h/w <4 and h>= hf and h<= hl:
             #print(cv2.contourArea(c))
             #4500 là kích thước tối thiểu của diện tích contour đảm bảo cho các contour "rác" không nhận diện
@@ -132,6 +142,11 @@ def find_number(cnts,binImg,imgtemp):
             coorarr.append((x,y,result))
             cv2.putText(imgtemp,result,(x-50,y+50),cv2.FONT_HERSHEY_COMPLEX,3,(0, 255, 0), 2, cv2.LINE_AA)
     #sắp xếp theo y, nhằm lấy hàng đầu tiên với y thấp nhất
+    if (wimg/himg >2):
+        coorarr.sort(key=takeFirst)
+        for x, y, c in coorarr:
+            plate_number+=c
+        return imgtemp, plate_number
     coorarr.sort(key=takeSecond)
     #Lấy ra 4 giá trị đầu tiên có y thấp nhất, nhằm đưa về hàng đầu
     firstrow = coorarr[:4]
@@ -410,8 +425,8 @@ def ClientHandling(firebase):
 
 if __name__ == "__main__":
 
-    # OriImg = cv2.imread('./Bike_back/xm7nho.jpg',1)
-    OriImg = cv2.imread('./img/xm7.jpg',1);
+    # OriImg = cv2.imread('./Bike_back/0509.jpg',1)
+    OriImg = cv2.imread('./img/xh1.jpg',1);
     pic(OriImg)
     # video_playback('./video/cv2.mp4')
     # video_webcam()
