@@ -64,8 +64,12 @@ def Handling(firebase,scanbike,bikelist,scanbikekey,booleankey):
             bikelist=getBikeList(firebase)
             isexist=False
             for index in range(len(bikelist)):
-                scanbiketmp=scanbike[:len(scanbike)-1]
-                itemtmp=bikelist[index][:len(bikelist[index])-1]
+                scanbiketmp=scanbike.split('-')
+                scanbiketmp=scanbiketmp[0]
+                print(scanbiketmp)
+                itemtmp= bikelist[index].split('-')
+                itemtmp=itemtmp[0]
+                print(itemtmp)
                 if scanbiketmp == itemtmp:
                     print("Yes, Xe da co trong he thong")
                     isexist=True
@@ -73,10 +77,11 @@ def Handling(firebase,scanbike,bikelist,scanbikekey,booleankey):
                     # itemkey= bikelist[index][len(bikelist[index])-1:len(bikelist[index])]
 
                     scanbikekey= scanbike.split('-')
+                    #65B1278899-8 = 65B1278899,8
                     scanbikekey= scanbikekey[1]
+                    #=8
                     itemkey= bikelist[index].split('-')
                     itemkey= itemkey[1]
-
 
                     if scanbikekey==itemkey:
                         print("Key đúng")
@@ -131,8 +136,12 @@ if __name__ == "__main__":
     # firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
     firebase = firebase.FirebaseApplication('https://bike-2f2b2-default-rtdb.firebaseio.com/', None)
     bikelist=getBikeList(firebase)
+    print(bikelist)
+
     scanbike=getScanBike(firebase)
+    
     scanbikekey=getScanBikeKey(firebase)
+
     booleankey=getBooleankey(firebase)
     Handling(firebase,scanbike,bikelist,scanbikekey,booleankey)
 
