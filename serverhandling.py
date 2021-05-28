@@ -1,6 +1,7 @@
 from firebase import firebase
 import keyboard
 
+# lấy được trường đầu tiên trong bikelist: firstbike-1
 def getBikeListkey(firebase):
     bikelistkey=firebase.get('/bikelist/','')
     bikelistkey=str(bikelistkey)
@@ -8,6 +9,7 @@ def getBikeListkey(firebase):
     bikelistkey=bikelistkey[1]
     return bikelistkey
 
+# dùng để get biển số scan được từ ip cam
 def getScanBike(firebase):
     scanbike= firebase.get('/bike/','')
     scanbike=str(scanbike)
@@ -15,6 +17,7 @@ def getScanBike(firebase):
     scanbike=scanbike[3]
     return scanbike
 
+# láy trưfờng đầu tiên trong bike: "MMYcJ9N0HwA8b4Qiwfv"
 def getScanBikeKey(firebase):
     scanbikekey= firebase.get('/bike/','')
     scanbikekey=str(scanbikekey)
@@ -22,6 +25,7 @@ def getScanBikeKey(firebase):
     scanbikekey=scanbikekey[1]
     return scanbikekey
 
+# lấy được danh sách các biển số và key tương ứng.
 def getBikeList(firebase):
     bikelist= firebase.get('/bikelist/','')
     bikelist=str(bikelist)
@@ -33,6 +37,7 @@ def getBikeList(firebase):
     bikelist=list(bikelist.split(","))
     return bikelist
 
+# lấy được trạng thái hiện tại liệu có để xác định: thêm xe vào, cho xe ra, sai key.
 def getBooleankey(firebase):
     booleankey= firebase.get('/boolean/','')
     booleankey=str(booleankey)
@@ -41,8 +46,8 @@ def getBooleankey(firebase):
     return booleankey
 
 
-# b = "Hello, World!"
-# print(b[:len(b)-1])
+
+# kiểm tra biển số đã tồn tại chưa
 def checkexistbike(scanbike,bikelist):
     for index in range(len(bikelist)):
         scanbiketmp=scanbike[:len(scanbike)-1]
@@ -60,6 +65,7 @@ def Handling(firebase,scanbike,bikelist,scanbikekey,booleankey):
             break
         # print("sever is listening")
         scanbike=getScanBike(firebase)
+        print("scanbike :"+scanbike)
         if scanbike !="": 
             bikelist=getBikeList(firebase)
             isexist=False
@@ -88,7 +94,9 @@ def Handling(firebase,scanbike,bikelist,scanbikekey,booleankey):
                         firebase.put('/boolean/',booleankey,"1")
                         bikelist.remove(scanbike)
                         firebase.put('/bike/',getScanBikeKey(firebase),"")
+                        print(getScanBikeKey(firebase)+"sang scanbikekey")
                         firebase.put('/bikelist/',getBikeListkey(firebase),bikelist)
+                        print(getBikeListkey(firebase)+"sang bikelistkey")
                     else :
                         print("key sai")
                         firebase.put('/boolean/',booleankey,"0")
@@ -136,12 +144,9 @@ if __name__ == "__main__":
     # firebase = firebase.FirebaseApplication('https://htpt-ae43c.firebaseio.com/', None)
     firebase = firebase.FirebaseApplication('https://bike-2f2b2-default-rtdb.firebaseio.com/', None)
     bikelist=getBikeList(firebase)
-    print(bikelist)
 
     scanbike=getScanBike(firebase)
-    
     scanbikekey=getScanBikeKey(firebase)
-
     booleankey=getBooleankey(firebase)
     Handling(firebase,scanbike,bikelist,scanbikekey,booleankey)
 
